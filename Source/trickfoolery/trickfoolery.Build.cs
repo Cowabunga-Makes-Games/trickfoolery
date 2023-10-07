@@ -2,13 +2,17 @@
 
 using UnrealBuildTool;
 
-public class trickfoolery : ModuleRules
-{
-	public trickfoolery(ReadOnlyTargetRules Target) : base(Target)
-	{
+public class trickfoolery : ModuleRules {
+	public trickfoolery(ReadOnlyTargetRules Target) : base(Target) {
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] {
+			"Core", 
+			"CoreUObject", 
+			"Engine", 
+			"InputCore",
+			"EnhancedInput"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
