@@ -41,20 +41,36 @@ public:
 
 #pragma region Input
 
-protected:
-	// Get a pointer to the UInputMappingContext in the editor
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-	UInputMappingContext* InputMapping;
-	
-	// Get a pointer to the defined InputActions to bind the Actions to functions
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-	UCPP_InputConfigData* InputActions;
+public:
+	/// <summary>
+	/// Plays all accessory sound, visual, etc. effects associated with this character movement via a Blueprint event.
+	/// <summary>
+	UFUNCTION(BlueprintImplementableEvent, Category = "Enhanced Input")
+		void PlayMovementEffects();
 
-	// The speed multiplier for the movement in the level
+protected:
+	/// <summary>
+	/// Reference to the UInputMappingContext to be used to receive player input.
+	/// <summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-	float MovementSpeed;
+		UInputMappingContext* InputMapping;
+	
+	/// <summary>
+	/// Reference to the defined InputActions to bind input events to this character's methods.
+	/// <summary>
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
+		UCPP_InputConfigData* InputActions;
+	
+	/// <summary>
+	/// The speed multiplier for the movement in the level.
+	/// <summary>
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
+		float MovementSpeed;
 
 private:
+	/// <summary>
+	/// Moves this character's position according to input scaled by MovementSpeed.
+	/// <summary>
 	void Move(const FInputActionValue& Value);
 
 #pragma endregion 

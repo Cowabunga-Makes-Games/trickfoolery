@@ -69,6 +69,8 @@ void ACPP_Player::Move(const FInputActionValue& Value) {
 		
 		AddMovementInput(Direction, InputVector.X * MovementSpeed);
 	}
+	
+	PlayMovementEffects();
 }
 
 #pragma endregion
