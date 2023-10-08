@@ -27,21 +27,6 @@ void ACPP_Player::Tick(float DeltaTime) {
 // Called to bind functionality to input
 void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	// Add the pointer to the UInputMappingContext to the Engine's Subsystem for the LocalPlayer to use
-	const APlayerController* PlayerController = Cast<APlayerController>(GetController());
-
-	// Get the local player subsystem, clear the existing mappings, and add our own mapping
-	UEnhancedInputLocalPlayerSubsystem* Subsystem =
-		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem> (PlayerController -> GetLocalPlayer());
-
-	Subsystem->ClearAllMappings();
-	Subsystem->AddMappingContext(InputMapping, 0);
-
-	UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-
-	// Bind all Input Actions here
-	PEI->BindAction(InputActions->MovementInput, ETriggerEvent::Triggered, this, &ACPP_Player::Move);
 }
 
 #pragma endregion

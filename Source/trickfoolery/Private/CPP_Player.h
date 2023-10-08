@@ -43,10 +43,17 @@ public:
 
 public:
 	/// <summary>
+	/// Moves this character's position according to input scaled by MovementSpeed.
+	/// <summary>
+	void Move(const FInputActionValue& Value);
+	
+	/// <summary>
 	/// Plays all accessory sound, visual, etc. effects associated with this character movement via a Blueprint event.
 	/// <summary>
 	UFUNCTION(BlueprintImplementableEvent, Category = "Enhanced Input")
 		void PlayMovementEffects();
+
+	void BindActions(UEnhancedInputComponent* EnhancedInputComponent);
 
 protected:
 	/// <summary>
@@ -66,12 +73,6 @@ protected:
 	/// <summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
 		float MovementSpeed;
-
-private:
-	/// <summary>
-	/// Moves this character's position according to input scaled by MovementSpeed.
-	/// <summary>
-	void Move(const FInputActionValue& Value);
 
 #pragma endregion 
 
