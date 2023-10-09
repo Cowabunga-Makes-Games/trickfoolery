@@ -2,6 +2,7 @@
 
 
 #include "CPP_Player.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 #pragma region UE Methods
 
@@ -10,6 +11,7 @@ ACPP_Player::ACPP_Player() {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	CanDash = true;
 }
 
 // Called when the game starts or when spawned
@@ -56,6 +58,26 @@ void ACPP_Player::Move(const FInputActionValue& Value) {
 	}
 	
 	PlayMovementEffects();
+}
+
+void ACPP_Player::Dash(const FInputActionValue& Value) {
+	if (!CanDash || Controller == nullptr) return;
+
+	UKismetSystemLibrary::PrintString(this, "Dash!");
+
+	// Cancel the current taunt action if applicable and can dash
+	PlayDashEffects();
+	LaunchCharacter(GetActorForwardVector() * DashForce, false, false);
+	
+	CanDash = false;
+	GetWorldTimerManager().SetTimer(DashCooldownTimeHandler, this, &ACPP_Player::OnDashCooldownComplete,
+		DashCooldown, false);
+}
+
+void ACPP_Player::OnDashCooldownComplete() {
+	CanDash = true;
+
+	UKismetSystemLibrary::PrintString(this, "Dash cooldown complete!");
 }
 
 #pragma endregion

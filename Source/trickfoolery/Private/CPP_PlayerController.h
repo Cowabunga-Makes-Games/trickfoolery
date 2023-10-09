@@ -55,6 +55,11 @@ private:
 	/// <summary>
 	void Move(const FInputActionValue& Value);
 
+	/// <summary>
+	/// Delegate this dash movement logic to the possessed Pawn class.
+	/// <summary>
+	void Dash(const FInputActionValue& Value);
+
 #pragma endregion 
 	
 };

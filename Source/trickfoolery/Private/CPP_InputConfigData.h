@@ -21,4 +21,7 @@ class TRICKFOOLERY_API UCPP_InputConfigData : public UDataAsset {
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		class UInputAction* MovementInput;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+		class UInputAction* DashInput;
 };
