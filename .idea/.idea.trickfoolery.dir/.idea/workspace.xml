@@ -8,6 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8cb2eb9e-96d4-41ba-b576-b0d11d709d27" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.trickfoolery.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.trickfoolery.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Characters/BP_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Characters/BP_Player.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Input/IMC_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Input/IMC_Player.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/DemoLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/DemoLevel.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/StarterContent/Architecture/Floor_400x400.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/StarterContent/Architecture/Floor_400x400.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/StarterContent/Architecture/Pillar_50x500.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/StarterContent/Architecture/Pillar_50x500.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/StarterContent/Architecture/SM_AssetPlatform.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/StarterContent/Architecture/SM_AssetPlatform.uasset" afterDir="false" />
@@ -39,6 +43,8 @@
       <change beforePath="$PROJECT_DIR$/Content/StarterContent/Audio/Starter_Birds01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/StarterContent/Audio/Starter_Birds01.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/StarterContent/Audio/Starter_Music01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/StarterContent/Audio/Starter_Music01.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/FileSystemMappings.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/Developer/RiderLink/Intermediate/FileSystemMappings.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/trickfoolery/Private/CPP_Player.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/trickfoolery/Private/CPP_Player.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/trickfoolery/Private/CPP_Player.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/trickfoolery/Private/CPP_Player.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,6 +151,7 @@
       <workItem from="1696799102061" duration="76000" />
       <workItem from="1696799452710" duration="928000" />
       <workItem from="1696802082734" duration="5099000" />
+      <workItem from="1697144534295" duration="2214000" />
     </task>
     <servers />
   </component>

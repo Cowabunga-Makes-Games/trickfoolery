@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Components/TimelineComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "CPP_InputConfigData.h"
@@ -86,12 +87,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
 		float MovementSpeed;
 
-	/// <summary>
-	/// The force multiplier for the dash movement in the level.
-	/// <summary>
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-		float DashForce;
-
+	// /// <summary>
+	// /// The target distance covered within a single dash execution.
+	// /// <summary>
+	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
+	// 	float DashDistance;
+	
 	/// <summary>
 	/// The duration of time required to pass between dash ability executions.
 	/// <summary>
@@ -99,18 +100,34 @@ protected:
 		float DashCooldown;
 
 private:
-	
 	/// <summary>
 	/// Refers to the current timer associated with the dash cooldown.
 	/// <summary>
 	FTimerHandle DashCooldownTimeHandler;
 	
 	bool CanDash;
-
+	
 	/// <summary>
 	/// Handles when the dash cooldown timer is completed. Toggles the CanDash flag to enable the dash ability.
 	/// <summary>
 	void OnDashCooldownComplete();
+
+	// /// <summary>
+	// /// The timeline to adjust this character's velocity and sync dash animation over a duration of time.
+	// /// <summary>
+	// FTimeline DashTimeline;
+
+	// /// <summary>
+	// /// The timeline to adjust this character's velocity and sync dash animation over a duration of time.
+	// /// <summary>
+	// UFUNCTION()
+	// 	void UpdateDashProgress(float Value);
+
+	// /// <summary>
+	// /// The timeline to adjust this character's velocity and sync dash animation over a duration of time.
+	// /// <summary>
+	// UPROPERTY(EditAnywhere, Category = "Dash")
+	// 	UCurveFloat* DashCurve;
 
 #pragma endregion 
 

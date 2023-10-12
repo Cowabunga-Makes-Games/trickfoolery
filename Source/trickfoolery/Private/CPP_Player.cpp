@@ -67,7 +67,6 @@ void ACPP_Player::Dash(const FInputActionValue& Value) {
 
 	// Cancel the current taunt action if applicable and can dash
 	PlayDashEffects();
-	LaunchCharacter(GetActorForwardVector() * DashForce, false, false);
 	
 	CanDash = false;
 	GetWorldTimerManager().SetTimer(DashCooldownTimeHandler, this, &ACPP_Player::OnDashCooldownComplete,
