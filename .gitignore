@@ -583,3 +583,11 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/unrealengine,visualstudio,visualstudiocode,rider
+
+# just in case
+/.git
+/Saved
+/DerivedDataCache
+/Intermediate
+/.vscode
+.ignore
