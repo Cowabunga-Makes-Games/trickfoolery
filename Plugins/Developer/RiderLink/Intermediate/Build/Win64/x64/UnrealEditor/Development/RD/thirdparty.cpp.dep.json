@@ -1,10 +1,10 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "c:\\users\\80cur\\onedrive\\documents\\github\\trickfoolery_ue\\plugins\\developer\\riderlink\\source\\rd\\thirdparty\\thirdparty.cpp",
+        "Source": "c:\\users\\ethan larose\\documents\\github\\trickfoolery_unreal\\plugins\\developer\\riderlink\\source\\rd\\thirdparty\\thirdparty.cpp",
         "ProvidedModule": "",
         "Includes": [
-            "c:\\users\\80cur\\onedrive\\documents\\github\\trickfoolery_ue\\plugins\\developer\\riderlink\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\rd\\definitions.h"
+            "c:\\users\\ethan larose\\documents\\github\\trickfoolery_unreal\\plugins\\developer\\riderlink\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\rd\\definitions.h"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []
