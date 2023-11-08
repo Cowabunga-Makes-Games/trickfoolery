@@ -14,7 +14,7 @@ void ACPP_PlayerController::BeginPlay() {
 		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer())) {
 		Subsystem->ClearAllMappings();
 		Subsystem->AddMappingContext(InputMappingContext, 0);
-	}
+		}
 }
 
 void ACPP_PlayerController::SetupInputComponent() {
@@ -24,6 +24,7 @@ void ACPP_PlayerController::SetupInputComponent() {
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent)) {
 		EnhancedInputComponent->BindAction(InputActions->MovementInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::Move);
+		EnhancedInputComponent->BindAction(InputActions->DashInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::Dash);
 	}
 }
 
@@ -34,6 +35,12 @@ void ACPP_PlayerController::SetupInputComponent() {
 void ACPP_PlayerController::Move(const FInputActionValue& Value) {
 	if (auto PossessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
 		PossessedPawn->Move(Value);
+	}
+}
+
+void ACPP_PlayerController::Dash(const FInputActionValue& Value) {
+	if (auto PossessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+		PossessedPawn->Dash(Value);
 	}
 }
 

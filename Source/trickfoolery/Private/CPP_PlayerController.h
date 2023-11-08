@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "CPP_Player.h"
 #include "CPP_PlayerController.generated.h"
@@ -36,24 +35,29 @@ protected:
 	/// Handle setting up the Input Mapping Context in the PlayerController and delegate the action binded method logic
 	/// to the possessed Pawn to support the repossession of a Pawn at any given time. (if we want to go that route...)
 
-protected:
+	protected:
 	/// <summary>
 	/// Reference to the UInputMappingContext to be used to receive player input.
 	/// <summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-		class UInputMappingContext* InputMappingContext;
+	UInputMappingContext* InputMappingContext;
 	
 	/// <summary>
 	/// Reference to the defined InputActions to bind input events to this character's methods.
 	/// <summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-		class UCPP_InputConfigData* InputActions;
+	UCPP_InputConfigData* InputActions;
 
 private:
 	/// <summary>
 	/// Delegate this movement logic to the possessed Pawn class.
 	/// <summary>
 	void Move(const FInputActionValue& Value);
+
+	/// <summary>
+	/// Delegate this dash movement logic to the possessed Pawn class.
+	/// <summary>
+	void Dash(const FInputActionValue& Value);
 
 #pragma endregion 
 	
