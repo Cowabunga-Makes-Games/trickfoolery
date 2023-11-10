@@ -87,11 +87,6 @@ public:
 
 protected:
 	/// <summary>
-	/// Delegate signature for the function that will handle the DashTimeline update events.
-	/// <summary>
-	FOnTimelineEvent TimelineUpdateEvent;
-	
-	/// <summary>
 	/// The timeline to adjust this character's velocity and sync dash animation over a duration of time.
 	/// <summary>
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Dash")

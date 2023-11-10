@@ -2,7 +2,6 @@
 
 
 #include "CPP_Player.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 #pragma region UE Methods
 
@@ -24,12 +23,11 @@ void ACPP_Player::BeginPlay() {
 		FOnTimelineFloat TimelineUpdateCallback;
 		FOnTimelineEventStatic TimelineFinishedCallback;
 
-		// TimelineUpdateCallback.BindUFunction(this, FName("UpdateDashProgress"));
 		TimelineUpdateCallback.BindUFunction(this, FName{ TEXT("OnDashTimelineUpdate") });
 		TimelineFinishedCallback.BindUFunction(this, FName{ TEXT("OnDashTimelineComplete") });
 
 		// Set up loop status and the function that will fire when the timeline ticks
-		DashTimeline->SetTimelineLength(0.7f);
+		DashTimeline->SetTimelineLength(0.8f);
 		DashTimeline->AddInterpFloat(DashCurve, TimelineUpdateCallback);
 		DashTimeline->SetTimelineFinishedFunc(TimelineFinishedCallback);
 		DashTimeline->SetLooping(false);
@@ -59,7 +57,7 @@ void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 #pragma region Input
 
 void ACPP_Player::Move(const FInputActionValue& Value) {
-	if (Controller == nullptr) return;
+	if (!CanDash || Controller == nullptr) return;
 	
 	const FVector2D InputVector = Value.Get<FVector2D>();
 	const FRotator ControlRotation(0, Controller->GetControlRotation().Yaw, 0);
@@ -96,8 +94,6 @@ void ACPP_Player::Dash(const FInputActionValue& Value) {
 
 void ACPP_Player::OnDashTimelineComplete() {
 	CanDash = true;
-
-	UKismetSystemLibrary::PrintString(this, "Dash cooldown complete!");
 }
 
 #pragma endregion
