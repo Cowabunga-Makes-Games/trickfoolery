@@ -10,20 +10,43 @@
 ACPP_Player::ACPP_Player() {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 	CanDash = true;
+	DashTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimelineComponent"));
 }
 
 // Called when the game starts or when spawned
 void ACPP_Player::BeginPlay() {
 	Super::BeginPlay();
 	
+	if (DashCurve) {
+		// Delegate, contains the signature of the function to execute on every DashTimeline update
+		FOnTimelineFloat TimelineUpdateCallback;
+		FOnTimelineEventStatic TimelineFinishedCallback;
+
+		// TimelineUpdateCallback.BindUFunction(this, FName("UpdateDashProgress"));
+		TimelineUpdateCallback.BindUFunction(this, FName{ TEXT("OnDashTimelineUpdate") });
+		TimelineFinishedCallback.BindUFunction(this, FName{ TEXT("OnDashTimelineComplete") });
+
+		// Set up loop status and the function that will fire when the timeline ticks
+		DashTimeline->SetTimelineLength(0.7f);
+		DashTimeline->AddInterpFloat(DashCurve, TimelineUpdateCallback);
+		DashTimeline->SetTimelineFinishedFunc(TimelineFinishedCallback);
+		DashTimeline->SetLooping(false);
+
+		return;
+	}
+
+	UE_LOG(LogTemp, Error, TEXT("No DashCurve is assigned! Aborting dash mechanic setup."))
 }
 
 // Called every frame
 void ACPP_Player::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-
+	
+	if (DashTimeline->IsPlaying()) {
+		DashTimeline->TickComponent(DeltaTime, LEVELTICK_TimeOnly, NULL);
+	}
 }
 
 // Called to bind functionality to input
@@ -63,15 +86,15 @@ void ACPP_Player::Move(const FInputActionValue& Value) {
 void ACPP_Player::Dash(const FInputActionValue& Value) {
 	if (!CanDash || Controller == nullptr) return;
 
+	DashTimeline->PlayFromStart();
+	
 	// Cancel the current taunt action if applicable and can dash
 	PlayDashEffects();
 	
 	CanDash = false;
-	GetWorldTimerManager().SetTimer(DashCooldownTimeHandler, this, &ACPP_Player::OnDashCooldownComplete,
-		DashCooldown, false);
 }
 
-void ACPP_Player::OnDashCooldownComplete() {
+void ACPP_Player::OnDashTimelineComplete() {
 	CanDash = true;
 
 	UKismetSystemLibrary::PrintString(this, "Dash cooldown complete!");
