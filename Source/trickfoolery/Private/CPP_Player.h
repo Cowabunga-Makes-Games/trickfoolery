@@ -4,8 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
+#include "Components/TimelineComponent.h"
 #include "CPP_InputConfigData.h"
 #include "CPP_Player.generated.h"
 
@@ -41,6 +40,8 @@ public:
 
 #pragma region Input
 
+#pragma region Movement
+	
 public:
 	/// <summary>
 	/// Moves this character's position according to input scaled by MovementSpeed.
@@ -50,29 +51,69 @@ public:
 	/// <summary>
 	/// Plays all accessory sound, visual, etc. effects associated with this character movement via a Blueprint event.
 	/// <summary>
-	UFUNCTION(BlueprintImplementableEvent, Category = "Enhanced Input")
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player Movement")
 		void PlayMovementEffects();
-
-	void BindActions(UEnhancedInputComponent* EnhancedInputComponent);
 
 protected:
 	/// <summary>
-	/// Reference to the UInputMappingContext to be used to receive player input.
-	/// <summary>
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-		UInputMappingContext* InputMapping;
-	
-	/// <summary>
-	/// Reference to the defined InputActions to bind input events to this character's methods.
-	/// <summary>
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-		UCPP_InputConfigData* InputActions;
-	
-	/// <summary>
 	/// The speed multiplier for the movement in the level.
 	/// <summary>
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Movement")
 		float MovementSpeed;
+
+#pragma endregion
+
+#pragma region Dash
+
+public:
+	/// <summary>
+	/// Applies a force to this character along the forward direction according to input scaled by DashForce.
+	/// <summary>
+	void Dash(const FInputActionValue& Value);
+	
+	/// <summary>
+	/// Plays all accessory sound, visual, etc. effects associated with this character's dash movement via a
+	/// Blueprint event.
+	/// <summary>
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player Dash")
+		void PlayDashEffects();
+
+	/// <summary>
+	/// Invoked on every update to the DashTimeline. Applies the dash movement velocity to the character according to
+	/// the DashCurve.
+	/// <summary>
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player Dash")
+		void OnDashTimelineUpdate(const float Value);
+
+protected:
+	/// <summary>
+	/// The timeline to adjust this character's velocity and sync dash animation over a duration of time.
+	/// <summary>
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Dash")
+	UTimelineComponent* DashTimeline;
+	
+	/// <summary>
+	/// The float curve used to model this character's changing velocity over the DashTimeline duration of time.
+	/// <summary>
+	UPROPERTY(EditAnywhere, Category = "Player Dash")
+		UCurveFloat* DashCurve;
+	
+	/// <summary>
+	/// Adjusts this character's distance and speed attained within a single dash execution.
+	/// <summary>
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Dash")
+		float DashDistance;
+
+private:
+	bool CanDash;
+	
+	/// <summary>
+	/// Handles when the DashTimeline is completed. Toggles the CanDash flag to re-enable the dash ability.
+	/// <summary>
+	UFUNCTION()
+		void OnDashTimelineComplete();
+
+#pragma endregion
 
 #pragma endregion 
 

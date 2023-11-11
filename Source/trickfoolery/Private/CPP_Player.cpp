@@ -9,19 +9,42 @@
 ACPP_Player::ACPP_Player() {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	
+	CanDash = true;
+	DashTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimelineComponent"));
 }
 
 // Called when the game starts or when spawned
 void ACPP_Player::BeginPlay() {
 	Super::BeginPlay();
 	
+	if (DashCurve) {
+		// Delegate, contains the signature of the function to execute on every DashTimeline update
+		FOnTimelineFloat TimelineUpdateCallback;
+		FOnTimelineEventStatic TimelineFinishedCallback;
+
+		TimelineUpdateCallback.BindUFunction(this, FName{ TEXT("OnDashTimelineUpdate") });
+		TimelineFinishedCallback.BindUFunction(this, FName{ TEXT("OnDashTimelineComplete") });
+
+		// Set up loop status and the function that will fire when the timeline ticks
+		DashTimeline->SetTimelineLength(0.8f);
+		DashTimeline->AddInterpFloat(DashCurve, TimelineUpdateCallback);
+		DashTimeline->SetTimelineFinishedFunc(TimelineFinishedCallback);
+		DashTimeline->SetLooping(false);
+
+		return;
+	}
+
+	UE_LOG(LogTemp, Error, TEXT("No DashCurve is assigned! Aborting dash mechanic setup."))
 }
 
 // Called every frame
 void ACPP_Player::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-
+	
+	if (DashTimeline->IsPlaying()) {
+		DashTimeline->TickComponent(DeltaTime, LEVELTICK_TimeOnly, NULL);
+	}
 }
 
 // Called to bind functionality to input
@@ -34,7 +57,7 @@ void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 #pragma region Input
 
 void ACPP_Player::Move(const FInputActionValue& Value) {
-	if (Controller == nullptr) return;
+	if (!CanDash || Controller == nullptr) return;
 	
 	const FVector2D InputVector = Value.Get<FVector2D>();
 	const FRotator ControlRotation(0, Controller->GetControlRotation().Yaw, 0);
@@ -56,6 +79,21 @@ void ACPP_Player::Move(const FInputActionValue& Value) {
 	}
 	
 	PlayMovementEffects();
+}
+
+void ACPP_Player::Dash(const FInputActionValue& Value) {
+	if (!CanDash || Controller == nullptr) return;
+
+	DashTimeline->PlayFromStart();
+	
+	// Cancel the current taunt action if applicable and can dash
+	PlayDashEffects();
+	
+	CanDash = false;
+}
+
+void ACPP_Player::OnDashTimelineComplete() {
+	CanDash = true;
 }
 
 #pragma endregion
