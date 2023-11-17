@@ -8,6 +8,13 @@
 #include "CPP_InputConfigData.h"
 #include "CPP_Player.generated.h"
 
+UENUM(BlueprintType)
+enum ETauntType {
+	Bleh UMETA(DisplayName="Bleh"),
+	CrabFace UMETA(DisplayName="CrabFace"),
+	LobsterRoll UMETA(DisplayName="LobsterRoll")
+};
+
 //*******************************************************************************************
 // ACPP_Player
 //*******************************************************************************************
@@ -112,6 +119,31 @@ private:
 	/// <summary>
 	UFUNCTION()
 		void OnDashTimelineComplete();
+
+#pragma endregion
+
+#pragma region Taunt
+
+public:
+	/// <summary>
+	/// If a taunt is not already in progress, begins a new taunt.
+	/// <summary>
+	void Taunt(const FInputActionValue& Value);
+
+	/// <summary>
+	/// Cancels the taunt currently being executed.
+	/// <summary>
+	void CancelTaunt(const FInputActionValue& Value);
+
+protected:
+	/// <summary>
+	/// Corresponds to the taunt types available to the player, used to trigger various SFX and timelines.
+	/// <summary>
+	UPROPERTY(BlueprintReadOnly, Category = "Player Taunt")
+		TEnumAsByte<ETauntType> TauntType;
+
+private:
+	bool CanTaunt;
 
 #pragma endregion
 

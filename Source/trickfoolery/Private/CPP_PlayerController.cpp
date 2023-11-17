@@ -25,6 +25,8 @@ void ACPP_PlayerController::SetupInputComponent() {
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent)) {
 		EnhancedInputComponent->BindAction(InputActions->MovementInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::Move);
 		EnhancedInputComponent->BindAction(InputActions->DashInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::Dash);
+		EnhancedInputComponent->BindAction(InputActions->TauntInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::Taunt);
+		EnhancedInputComponent->BindAction(InputActions->CancelTauntInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::CancelTaunt);
 	}
 }
 
@@ -41,6 +43,18 @@ void ACPP_PlayerController::Move(const FInputActionValue& Value) {
 void ACPP_PlayerController::Dash(const FInputActionValue& Value) {
 	if (auto PossessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
 		PossessedPawn->Dash(Value);
+	}
+}
+
+void ACPP_PlayerController::Taunt(const FInputActionValue& Value) {
+	if (auto PossessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+		PossessedPawn->Taunt(Value);
+	}
+}
+
+void ACPP_PlayerController::CancelTaunt(const FInputActionValue& Value) {
+	if (auto PossessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+		PossessedPawn->CancelTaunt(Value);
 	}
 }
 

@@ -3,6 +3,8 @@
 
 #include "CPP_Player.h"
 
+#include "Kismet/KismetSystemLibrary.h"
+
 #pragma region UE Methods
 
 // Sets default values
@@ -94,6 +96,14 @@ void ACPP_Player::Dash(const FInputActionValue& Value) {
 
 void ACPP_Player::OnDashTimelineComplete() {
 	CanDash = true;
+}
+
+void ACPP_Player::Taunt(const FInputActionValue& Value) {
+	UKismetSystemLibrary::PrintString(this, "Hey! CRABFACE!!!");
+}
+
+void ACPP_Player::CancelTaunt(const FInputActionValue& Value) {
+	UKismetSystemLibrary::PrintString(this, "Cancel Taunt");
 }
 
 #pragma endregion
