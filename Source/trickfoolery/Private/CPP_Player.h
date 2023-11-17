@@ -101,13 +101,13 @@ protected:
 	/// The timeline to adjust this character's velocity and sync dash animation over a duration of time.
 	/// <summary>
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Dash")
-	UTimelineComponent* DashTimeline;
+		class UTimelineComponent* DashTimeline;
 	
 	/// <summary>
 	/// The float curve used to model this character's changing velocity over the DashTimeline duration of time.
 	/// <summary>
 	UPROPERTY(EditAnywhere, Category = "Player Dash")
-		UCurveFloat* DashCurve;
+		class UCurveFloat* DashCurve;
 	
 	/// <summary>
 	/// Adjusts this character's distance and speed attained within a single dash execution.
@@ -143,26 +143,26 @@ public:
 	/// Plays all accessory sound, visual, etc. effects associated with this character's taunts via a Blueprint event.
 	/// <summary>
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player Taunt")
-	void PlayTauntEffects();
+		void PlayTauntEffects();
 
 	/// <summary>
 	/// Quits all accessory sound, visual, etc. effects associated with the current taunt via a Blueprint event.
 	/// <summary>
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player Taunt")
-	void CancelTauntEffects();
+		void CancelTauntEffects();
 
 protected:
 	/// <summary>
 	/// Corresponds to the taunt types available to the player, used to trigger various SFX and timelines.
 	/// <summary>
 	UPROPERTY(BlueprintReadOnly, Category = "Player Taunt")
-		TEnumAsByte<ETauntType> TauntType;
+		class TEnumAsByte<ETauntType> TauntType;
 
 	/// <summary>
 	/// Adjusts this character's distance and speed attained within a single dash execution.
 	/// <summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Taunt")
-		TArray<float> TauntExecutionCooldown;
+		class TArray<float> TauntExecutionCooldown;
 
 private:
 	bool IsTaunting, CanTaunt;

@@ -41,13 +41,13 @@ protected:
 	/// Reference to the UInputMappingContext to be used to receive player input.
 	/// <summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-	UInputMappingContext* InputMappingContext;
+		class UInputMappingContext* InputMappingContext;
 	
 	/// <summary>
 	/// Reference to the defined InputActions to bind input events to this character's methods.
 	/// <summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-	UCPP_InputConfigData* InputActions;
+		class UCPP_InputConfigData* InputActions;
 
 private:
 	/// <summary>

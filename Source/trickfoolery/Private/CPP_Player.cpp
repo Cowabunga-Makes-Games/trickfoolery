@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "CPP_Player.h"
 
 #include "Kismet/KismetSystemLibrary.h"
@@ -59,6 +58,8 @@ void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 #pragma region Input
 
+#pragma region Movement
+
 void ACPP_Player::Move(const FInputActionValue& Value) {
 	if (!CanDash || IsTaunting || Controller == nullptr) return;
 	
@@ -84,6 +85,10 @@ void ACPP_Player::Move(const FInputActionValue& Value) {
 	PlayMovementEffects();
 }
 
+#pragma endregion
+
+#pragma region Dash
+
 void ACPP_Player::Dash(const FInputActionValue& Value) {
 	if (!CanDash || Controller == nullptr) return;
 
@@ -103,6 +108,10 @@ void ACPP_Player::OnDashTimelineComplete() {
 	CanDash = true;
 	CanTaunt = true;
 }
+
+#pragma endregion 
+
+#pragma region Taunt
 
 void ACPP_Player::Taunt(const FInputActionValue& Value) {
 	if (!CanTaunt) return;
@@ -150,5 +159,7 @@ void ACPP_Player::CancelTaunt(const FInputActionValue& Value) {
 	IsTaunting = false;
 	CanTaunt = true;
 }
+
+#pragma endregion 
 
 #pragma endregion
