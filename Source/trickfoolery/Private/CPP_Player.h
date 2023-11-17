@@ -145,6 +145,12 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player Taunt")
 	void PlayTauntEffects();
 
+	/// <summary>
+	/// Quits all accessory sound, visual, etc. effects associated with the current taunt via a Blueprint event.
+	/// <summary>
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player Taunt")
+	void CancelTauntEffects();
+
 protected:
 	/// <summary>
 	/// Corresponds to the taunt types available to the player, used to trigger various SFX and timelines.

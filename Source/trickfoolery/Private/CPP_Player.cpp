@@ -108,16 +108,30 @@ void ACPP_Player::Taunt(const FInputActionValue& Value) {
 	TauntType = static_cast<ETauntType>(FMath::RandRange(0, TauntCount - 1));
 
 	// TODO: Timer implementation can be changed to a Timeline in the future if we'd like to attach a curve to it to
-	// simulate taunt "keywords" that increase anger stats at a higher rate at certain points in the sound clips
+	// simulate taunt "keywords" that increase angy stats at a higher rate at certain points in the sound clips
 	GetWorldTimerManager().SetTimer(TauntTimeHandler, this, &ACPP_Player::OnTauntComplete,
 		TauntExecutionCooldown[TauntType], false);
 
-	UKismetSystemLibrary::PrintString(this, "Hey! CRABFACE!!!");
+	// TODO: Just for testing, remove when actual SFX and animations come in
+	switch (TauntType) {
+		case (Bleh):
+			UKismetSystemLibrary::PrintString(this, "Bleeeeeeeeeh");
+			break;
+		case (CrabFace):
+			UKismetSystemLibrary::PrintString(this, "Hey! CRABFACE!!!");
+			break;
+		case (LobsterRoll):
+			UKismetSystemLibrary::PrintString(this, "Hey! LOBSTER ROLL!!!");
+			break;
+		default:
+			break;
+	}
+	
 	PlayTauntEffects();
 	CanTaunt = false;
 }
 
-// Can be used to increment some taunt combo to add hype or angry multipliers
+// Can be used to increment some taunt combo to add hype or angy multipliers
 void ACPP_Player::OnTauntComplete() {
 	CanTaunt = true;
 
@@ -128,6 +142,7 @@ void ACPP_Player::CancelTaunt(const FInputActionValue& Value) {
 	UKismetSystemLibrary::PrintString(this, "Cancel Taunt Execution Chain");
 
 	GetWorldTimerManager().ClearTimer(TauntTimeHandler);
+	CancelTauntEffects();
 	CanTaunt = true;
 }
 
