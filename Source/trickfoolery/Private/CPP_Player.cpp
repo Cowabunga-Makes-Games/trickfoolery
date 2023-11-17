@@ -88,7 +88,9 @@ void ACPP_Player::Dash(const FInputActionValue& Value) {
 
 	DashTimeline->PlayFromStart();
 	
-	// Cancel the current taunt action if applicable and can dash
+	// Cancel the current taunt action
+	CancelTaunt(0);
+	
 	PlayDashEffects();
 	
 	CanDash = false;
@@ -96,14 +98,37 @@ void ACPP_Player::Dash(const FInputActionValue& Value) {
 
 void ACPP_Player::OnDashTimelineComplete() {
 	CanDash = true;
+	CanTaunt = true;
 }
 
 void ACPP_Player::Taunt(const FInputActionValue& Value) {
+	if (!CanTaunt) return;
+
+	// Select a random taunt type
+	TauntType = static_cast<ETauntType>(FMath::RandRange(0, TauntCount - 1));
+
+	// TODO: Timer implementation can be changed to a Timeline in the future if we'd like to attach a curve to it to
+	// simulate taunt "keywords" that increase anger stats at a higher rate at certain points in the sound clips
+	GetWorldTimerManager().SetTimer(TauntTimeHandler, this, &ACPP_Player::OnTauntComplete,
+		TauntExecutionCooldown[TauntType], false);
+
 	UKismetSystemLibrary::PrintString(this, "Hey! CRABFACE!!!");
+	PlayTauntEffects();
+	CanTaunt = false;
+}
+
+// Can be used to increment some taunt combo to add hype or angry multipliers
+void ACPP_Player::OnTauntComplete() {
+	CanTaunt = true;
+
+	UKismetSystemLibrary::PrintString(this, "Taunt complete!");
 }
 
 void ACPP_Player::CancelTaunt(const FInputActionValue& Value) {
-	UKismetSystemLibrary::PrintString(this, "Cancel Taunt");
+	UKismetSystemLibrary::PrintString(this, "Cancel Taunt Execution Chain");
+
+	GetWorldTimerManager().ClearTimer(TauntTimeHandler);
+	CanTaunt = true;
 }
 
 #pragma endregion

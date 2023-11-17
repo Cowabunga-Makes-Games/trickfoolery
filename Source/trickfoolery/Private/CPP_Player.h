@@ -10,9 +10,13 @@
 
 UENUM(BlueprintType)
 enum ETauntType {
-	Bleh UMETA(DisplayName="Bleh"),
-	CrabFace UMETA(DisplayName="CrabFace"),
-	LobsterRoll UMETA(DisplayName="LobsterRoll")
+	Bleh
+	UMETA(DisplayName="Bleh"),
+	CrabFace
+	UMETA(DisplayName="CrabFace"),
+	LobsterRoll
+	UMETA(DisplayName="LobsterRoll"),
+	TauntCount
 };
 
 //*******************************************************************************************
@@ -135,6 +139,12 @@ public:
 	/// <summary>
 	void CancelTaunt(const FInputActionValue& Value);
 
+	/// <summary>
+	/// Plays all accessory sound, visual, etc. effects associated with this character's taunts via a Blueprint event.
+	/// <summary>
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player Taunt")
+	void PlayTauntEffects();
+
 protected:
 	/// <summary>
 	/// Corresponds to the taunt types available to the player, used to trigger various SFX and timelines.
@@ -142,8 +152,24 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Player Taunt")
 		TEnumAsByte<ETauntType> TauntType;
 
+	/// <summary>
+	/// Adjusts this character's distance and speed attained within a single dash execution.
+	/// <summary>
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Taunt")
+		TArray<float> TauntExecutionCooldown;
+
 private:
 	bool CanTaunt;
+
+	/// <summary>
+	/// Refers to the current timer associated with the taunt execution chain.
+	/// <summary>
+	FTimerHandle TauntTimeHandler;
+
+	/// <summary>
+	/// Handles when the taunt execution timer is completed. Toggles the CanTaunt flag to re-enable the taunt ability.
+	/// <summary>
+	void OnTauntComplete();
 
 #pragma endregion
 
