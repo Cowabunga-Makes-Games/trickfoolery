@@ -165,7 +165,7 @@ protected:
 		TArray<float> TauntExecutionCooldown;
 
 private:
-	bool CanTaunt;
+	bool IsTaunting, CanTaunt;
 
 	/// <summary>
 	/// Refers to the current timer associated with the taunt execution chain.

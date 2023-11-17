@@ -60,7 +60,7 @@ void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 #pragma region Input
 
 void ACPP_Player::Move(const FInputActionValue& Value) {
-	if (!CanDash || Controller == nullptr) return;
+	if (!CanDash || IsTaunting || Controller == nullptr) return;
 	
 	const FVector2D InputVector = Value.Get<FVector2D>();
 	const FRotator ControlRotation(0, Controller->GetControlRotation().Yaw, 0);
@@ -90,7 +90,9 @@ void ACPP_Player::Dash(const FInputActionValue& Value) {
 	DashTimeline->PlayFromStart();
 	
 	// Cancel the current taunt action
-	CancelTaunt(0);
+	if (IsTaunting) {
+		CancelTaunt(0);
+	}
 	
 	PlayDashEffects();
 	
@@ -129,6 +131,7 @@ void ACPP_Player::Taunt(const FInputActionValue& Value) {
 	}
 	
 	PlayTauntEffects();
+	IsTaunting = true;
 	CanTaunt = false;
 }
 
@@ -144,6 +147,7 @@ void ACPP_Player::CancelTaunt(const FInputActionValue& Value) {
 
 	GetWorldTimerManager().ClearTimer(TauntTimeHandler);
 	CancelTauntEffects();
+	IsTaunting = false;
 	CanTaunt = true;
 }
 
