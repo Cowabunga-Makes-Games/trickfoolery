@@ -156,13 +156,13 @@ protected:
 	/// Corresponds to the taunt types available to the player, used to trigger various SFX and timelines.
 	/// <summary>
 	UPROPERTY(BlueprintReadOnly, Category = "Player Taunt")
-		class TEnumAsByte<ETauntType> TauntType;
+		TEnumAsByte<ETauntType> TauntType;
 
 	/// <summary>
 	/// Adjusts this character's distance and speed attained within a single dash execution.
 	/// <summary>
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Taunt")
-		class TArray<float> TauntExecutionCooldown;
+		TArray<float> TauntExecutionCooldown;
 
 private:
 	bool IsTaunting, CanTaunt;
