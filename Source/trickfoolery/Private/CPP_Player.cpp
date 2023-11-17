@@ -13,6 +13,7 @@ ACPP_Player::ACPP_Player() {
 	PrimaryActorTick.bCanEverTick = true;
 	
 	CanDash = true;
+	CanTaunt = true;
 	DashTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimelineComponent"));
 }
 
