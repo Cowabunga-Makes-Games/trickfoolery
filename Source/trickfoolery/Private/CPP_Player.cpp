@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "CPP_Player.h"
+
+#include "Kismet/KismetSystemLibrary.h"
 
 #pragma region UE Methods
 
@@ -11,6 +12,7 @@ ACPP_Player::ACPP_Player() {
 	PrimaryActorTick.bCanEverTick = true;
 	
 	CanDash = true;
+	CanTaunt = true;
 	DashTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimelineComponent"));
 }
 
@@ -56,8 +58,10 @@ void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 #pragma region Input
 
+#pragma region Movement
+
 void ACPP_Player::Move(const FInputActionValue& Value) {
-	if (!CanDash || Controller == nullptr) return;
+	if (!CanDash || IsTaunting || Controller == nullptr) return;
 	
 	const FVector2D InputVector = Value.Get<FVector2D>();
 	const FRotator ControlRotation(0, Controller->GetControlRotation().Yaw, 0);
@@ -81,12 +85,20 @@ void ACPP_Player::Move(const FInputActionValue& Value) {
 	PlayMovementEffects();
 }
 
+#pragma endregion
+
+#pragma region Dash
+
 void ACPP_Player::Dash(const FInputActionValue& Value) {
 	if (!CanDash || Controller == nullptr) return;
 
 	DashTimeline->PlayFromStart();
 	
-	// Cancel the current taunt action if applicable and can dash
+	// Cancel the current taunt action
+	if (IsTaunting) {
+		CancelTaunt(0);
+	}
+	
 	PlayDashEffects();
 	
 	CanDash = false;
@@ -94,6 +106,60 @@ void ACPP_Player::Dash(const FInputActionValue& Value) {
 
 void ACPP_Player::OnDashTimelineComplete() {
 	CanDash = true;
+	CanTaunt = true;
 }
+
+#pragma endregion 
+
+#pragma region Taunt
+
+void ACPP_Player::Taunt(const FInputActionValue& Value) {
+	if (!CanTaunt) return;
+
+	// Select a random taunt type
+	TauntType = static_cast<ETauntType>(FMath::RandRange(0, TauntCount - 1));
+
+	// TODO: Timer implementation can be changed to a Timeline in the future if we'd like to attach a curve to it to
+	// simulate taunt "keywords" that increase angy stats at a higher rate at certain points in the sound clips
+	GetWorldTimerManager().SetTimer(TauntTimeHandler, this, &ACPP_Player::OnTauntComplete,
+		TauntExecutionCooldown[TauntType], false);
+
+	// TODO: Just for testing, remove when actual SFX and animations come in
+	switch (TauntType) {
+		case (Bleh):
+			UKismetSystemLibrary::PrintString(this, "Bleeeeeeeeeh");
+			break;
+		case (CrabFace):
+			UKismetSystemLibrary::PrintString(this, "Hey! CRABFACE!!!");
+			break;
+		case (LobsterRoll):
+			UKismetSystemLibrary::PrintString(this, "Hey! LOBSTER ROLL!!!");
+			break;
+		default:
+			break;
+	}
+	
+	PlayTauntEffects();
+	IsTaunting = true;
+	CanTaunt = false;
+}
+
+// Can be used to increment some taunt combo to add hype or angy multipliers
+void ACPP_Player::OnTauntComplete() {
+	CanTaunt = true;
+
+	UKismetSystemLibrary::PrintString(this, "Taunt complete!");
+}
+
+void ACPP_Player::CancelTaunt(const FInputActionValue& Value) {
+	UKismetSystemLibrary::PrintString(this, "Cancel Taunt Execution Chain");
+
+	GetWorldTimerManager().ClearTimer(TauntTimeHandler);
+	CancelTauntEffects();
+	IsTaunting = false;
+	CanTaunt = true;
+}
+
+#pragma endregion 
 
 #pragma endregion

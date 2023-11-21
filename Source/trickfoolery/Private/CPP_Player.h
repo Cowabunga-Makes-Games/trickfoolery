@@ -8,6 +8,17 @@
 #include "CPP_InputConfigData.h"
 #include "CPP_Player.generated.h"
 
+UENUM(BlueprintType)
+enum ETauntType {
+	Bleh
+	UMETA(DisplayName="Bleh"),
+	CrabFace
+	UMETA(DisplayName="CrabFace"),
+	LobsterRoll
+	UMETA(DisplayName="LobsterRoll"),
+	TauntCount
+};
+
 //*******************************************************************************************
 // ACPP_Player
 //*******************************************************************************************
@@ -90,13 +101,13 @@ protected:
 	/// The timeline to adjust this character's velocity and sync dash animation over a duration of time.
 	/// <summary>
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Dash")
-	UTimelineComponent* DashTimeline;
+		class UTimelineComponent* DashTimeline;
 	
 	/// <summary>
 	/// The float curve used to model this character's changing velocity over the DashTimeline duration of time.
 	/// <summary>
 	UPROPERTY(EditAnywhere, Category = "Player Dash")
-		UCurveFloat* DashCurve;
+		class UCurveFloat* DashCurve;
 	
 	/// <summary>
 	/// Adjusts this character's distance and speed attained within a single dash execution.
@@ -112,6 +123,59 @@ private:
 	/// <summary>
 	UFUNCTION()
 		void OnDashTimelineComplete();
+
+#pragma endregion
+
+#pragma region Taunt
+
+public:
+	/// <summary>
+	/// If a taunt is not already in progress, begins a new taunt.
+	/// <summary>
+	void Taunt(const FInputActionValue& Value);
+
+	/// <summary>
+	/// Cancels the taunt currently being executed.
+	/// <summary>
+	void CancelTaunt(const FInputActionValue& Value);
+
+	/// <summary>
+	/// Plays all accessory sound, visual, etc. effects associated with this character's taunts via a Blueprint event.
+	/// <summary>
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player Taunt")
+		void PlayTauntEffects();
+
+	/// <summary>
+	/// Quits all accessory sound, visual, etc. effects associated with the current taunt via a Blueprint event.
+	/// <summary>
+	UFUNCTION(BlueprintImplementableEvent, Category = "Player Taunt")
+		void CancelTauntEffects();
+
+protected:
+	/// <summary>
+	/// Corresponds to the taunt types available to the player, used to trigger various SFX and timelines.
+	/// <summary>
+	UPROPERTY(BlueprintReadOnly, Category = "Player Taunt")
+		TEnumAsByte<ETauntType> TauntType;
+
+	/// <summary>
+	/// Adjusts this character's distance and speed attained within a single dash execution.
+	/// <summary>
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Taunt")
+		TArray<float> TauntExecutionCooldown;
+
+private:
+	bool IsTaunting, CanTaunt;
+
+	/// <summary>
+	/// Refers to the current timer associated with the taunt execution chain.
+	/// <summary>
+	FTimerHandle TauntTimeHandler;
+
+	/// <summary>
+	/// Handles when the taunt execution timer is completed. Toggles the CanTaunt flag to re-enable the taunt ability.
+	/// <summary>
+	void OnTauntComplete();
 
 #pragma endregion
 
