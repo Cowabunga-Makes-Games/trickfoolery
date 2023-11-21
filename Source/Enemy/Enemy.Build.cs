@@ -2,8 +2,8 @@
 
 using UnrealBuildTool;
 
-public class trickfoolery : ModuleRules {
-	public trickfoolery(ReadOnlyTargetRules Target) : base(Target) {
+public class Enemy : ModuleRules {
+	public Enemy(ReadOnlyTargetRules Target) : base(Target) {
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[] {
@@ -11,8 +11,8 @@ public class trickfoolery : ModuleRules {
 			"CoreUObject", 
 			"Engine", 
 			"InputCore",
-			"EnhancedInput",
-			"Enemy"
+			"AIModule",
+			"NavigationSystem"
 		});
 
 		// Uncomment if you are using Slate UI

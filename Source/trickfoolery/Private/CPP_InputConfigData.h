@@ -15,7 +15,7 @@
 /// to bind to Actor-specific action methods.
 /// </summary>
 UCLASS()
-class TRICKFOOLERY_API UCPP_InputConfigData : public UDataAsset {
+class UCPP_InputConfigData : public UDataAsset {
 	GENERATED_BODY()
 
 public:
