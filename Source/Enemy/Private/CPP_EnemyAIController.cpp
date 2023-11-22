@@ -12,8 +12,8 @@ ACPP_EnemyAIController::ACPP_EnemyAIController(FObjectInitializer const& ObjectI
 void ACPP_EnemyAIController::OnPossess(APawn* InPawn) {
 	Super::OnPossess(InPawn);
 
-	if (auto const enemy = Cast<ACPP_Enemy>(InPawn)) {
-		if (auto const BTBrain = enemy->GetBehaviourTree()) {
+	if (auto* const enemy = Cast<ACPP_Enemy>(InPawn)) {
+		if (auto* const BTBrain = enemy->GetBehaviourTree()) {
 			UBlackboardComponent* blackboard;
 
 			// Ensure a Blackboard Component will exist before referencing it
