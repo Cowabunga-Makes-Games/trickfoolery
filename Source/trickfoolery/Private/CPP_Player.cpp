@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CPP_Player.h"
-
 #include "Kismet/KismetSystemLibrary.h"
 
 #pragma region UE Methods

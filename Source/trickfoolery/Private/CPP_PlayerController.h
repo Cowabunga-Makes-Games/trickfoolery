@@ -10,11 +10,9 @@
 #include "CPP_PlayerController.generated.h"
 
 //*******************************************************************************************
-// ACPP_PlayerController
+// CPP_PlayerController
 //*******************************************************************************************
-/// <summary>
-/// Links the Enhanced Input System bindings to the active possessed Pawn.
-/// </summary>
+/** Links the Enhanced Input System bindings to the active possessed Pawn. */
 UCLASS()
 class ACPP_PlayerController : public APlayerController {
 	GENERATED_BODY()
@@ -33,41 +31,27 @@ protected:
 #pragma endregion
 
 #pragma region Input
-	/// Handle setting up the Input Mapping Context in the PlayerController and delegate the action binded method logic
-	/// to the possessed Pawn to support the repossession of a Pawn at any given time. (if we want to go that route...)
 
-	protected:
-	/// <summary>
-	/// Reference to the UInputMappingContext to be used to receive player input.
-	/// <summary>
+protected:
+	/** Reference to the UInputMappingContext to be used to receive player input. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-		class UInputMappingContext* InputMappingContext;
+		UInputMappingContext* InputMappingContext;
 	
-	/// <summary>
-	/// Reference to the defined InputActions to bind input events to this character's methods.
-	/// <summary>
+	/** Reference to the defined InputActions to bind input events to this character's methods. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enhanced Input")
-		class UCPP_InputConfigData* InputActions;
+		UCPP_InputConfigData* InputActions;
 
 private:
-	/// <summary>
-	/// Delegate this movement logic to the possessed Pawn class.
-	/// <summary>
+	/** Delegate this movement logic to the possessed Pawn class. */
 	void Move(const FInputActionValue& Value);
 
-	/// <summary>
-	/// Delegate this dash movement logic to the possessed Pawn class.
-	/// <summary>
+	/** Delegate this dash movement logic to the possessed Pawn class. */
 	void Dash(const FInputActionValue& Value);
-	
-	/// <summary>
-	/// Delegate this taunt logic to the possessed Pawn class.
-	/// <summary>
+
+	/** Delegate this taunt logic to the possessed Pawn class. */
 	void Taunt(const FInputActionValue& Value);
 
-	/// <summary>
-	/// Delegate this cancel taunt logic to the possessed Pawn class.
-	/// <summary>
+	/** Delegate this cancel taunt logic to the possessed Pawn class. */
 	void CancelTaunt(const FInputActionValue& Value);
 
 #pragma endregion 

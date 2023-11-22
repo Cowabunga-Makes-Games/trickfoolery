@@ -7,10 +7,19 @@
 #include "GameFramework/Character.h"
 #include "CPP_Enemy.generated.h"
 
+//*******************************************************************************************
+// CPP_Enemy
+//*******************************************************************************************
+/**
+ * Extends the ACharacter class to set the AIController and BehaviorTree for an Enemy type
+ * to execute the associated AI.
+ */
 UCLASS()
 class ENEMY_API ACPP_Enemy : public ACharacter {
 	GENERATED_BODY()
 
+#pragma region UE Methods
+	
 public:
 	// Sets default values for this character's properties
 	ACPP_Enemy();
@@ -21,12 +30,21 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UBehaviorTree* GetBehaviourTree() const;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AI", meta=(AllowPrivateAccess="true"))
+#pragma endregion
+
+#pragma region AI
+
+public:
+	UBehaviorTree* GetBehaviourTree() const;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AI")
 		UBehaviorTree* AIBrain;
+
+#pragma endregion
+	
 };

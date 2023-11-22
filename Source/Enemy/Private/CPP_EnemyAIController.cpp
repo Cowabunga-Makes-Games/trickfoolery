@@ -3,8 +3,6 @@
 
 #include "CPP_EnemyAIController.h"
 
-#include "CPP_Enemy.h"
-
 ACPP_EnemyAIController::ACPP_EnemyAIController(FObjectInitializer const& ObjectInitializer) {
 	
 }
@@ -12,15 +10,21 @@ ACPP_EnemyAIController::ACPP_EnemyAIController(FObjectInitializer const& ObjectI
 void ACPP_EnemyAIController::OnPossess(APawn* InPawn) {
 	Super::OnPossess(InPawn);
 
-	if (auto* const enemy = Cast<ACPP_Enemy>(InPawn)) {
-		if (auto* const BTBrain = enemy->GetBehaviourTree()) {
-			UBlackboardComponent* blackboard;
-
-			// Ensure a Blackboard Component will exist before referencing it
-			UseBlackboard(BTBrain->BlackboardAsset, blackboard);
-			Blackboard = blackboard;
-			
-			RunBehaviorTree(BTBrain);
-		}
+	const ACPP_Enemy* Enemy = Cast<ACPP_Enemy>(InPawn);
+	if (Enemy == nullptr) {
+		return;
 	}
+
+	UBehaviorTree* BTBrain = Enemy->GetBehaviourTree();
+	if (BTBrain == nullptr) {
+		return;
+	}
+
+	UBlackboardComponent* blackboard;
+
+	// Ensure a Blackboard Component will exist before referencing it
+	UseBlackboard(BTBrain->BlackboardAsset, blackboard);
+	Blackboard = blackboard;
+			
+	RunBehaviorTree(BTBrain);
 }

@@ -8,26 +8,26 @@
 #include "CPP_InputConfigData.generated.h"
 
 //*******************************************************************************************
-// UCPP_InputConfigData
+// CPP_InputConfigData
 //*******************************************************************************************
-/// <summary>
-/// A Data Asset utilized to store all references to Input Actions used in IMC_Player
-/// to bind to Actor-specific action methods.
-/// </summary>
+/**
+ * A Data Asset utilized to store all references to Input Actions used in IMC_Player
+ * to bind to Actor-specific action methods.
+ */
 UCLASS()
 class UCPP_InputConfigData : public UDataAsset {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-		class UInputAction* MovementInput;
+		UInputAction* MovementInput;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-		class UInputAction* DashInput;
+		UInputAction* DashInput;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-		class UInputAction* TauntInput;
+		UInputAction* TauntInput;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-		class UInputAction* CancelTauntInput;
+		UInputAction* CancelTauntInput;
 };
