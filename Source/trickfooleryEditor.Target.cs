@@ -11,5 +11,6 @@ public class trickfooleryEditorTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
 		ExtraModuleNames.AddRange( new string[] { "trickfoolery" } );
+		ExtraModuleNames.AddRange( new string[] { "Enemy" } );
 	}
 }

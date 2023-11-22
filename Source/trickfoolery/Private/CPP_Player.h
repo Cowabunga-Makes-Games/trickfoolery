@@ -20,12 +20,12 @@ enum ETauntType {
 };
 
 //*******************************************************************************************
-// ACPP_Player
+// CPP_Player
 //*******************************************************************************************
-/// <summary>
-/// Extends the ACharacter class to implement core player movement, dash, and taunt
-/// mechanics.
-/// </summary>
+/**
+ * Extends the ACharacter class to implement core player movement, dash, and taunt
+ * mechanics.
+ */
 UCLASS()
 class TRICKFOOLERY_API ACPP_Player : public ACharacter {
 	GENERATED_BODY()
@@ -36,16 +36,15 @@ public:
 	// Sets default values for this character's properties
 	ACPP_Player();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 #pragma endregion
 
@@ -54,21 +53,17 @@ public:
 #pragma region Movement
 	
 public:
-	/// <summary>
-	/// Moves this character's position according to input scaled by MovementSpeed.
-	/// <summary>
+	/** Moves this character's position according to input scaled by MovementSpeed. */
 	void Move(const FInputActionValue& Value);
-	
-	/// <summary>
-	/// Plays all accessory sound, visual, etc. effects associated with this character movement via a Blueprint event.
-	/// <summary>
+
+	/**
+	 * Plays all accessory sound, visual, etc. effects associated with this character movement via a Blueprint event.
+	 */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player Movement")
 		void PlayMovementEffects();
 
 protected:
-	/// <summary>
-	/// The speed multiplier for the movement in the level.
-	/// <summary>
+	/** The speed multiplier for the movement in the level. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Movement")
 		float MovementSpeed;
 
@@ -77,50 +72,40 @@ protected:
 #pragma region Dash
 
 public:
-	/// <summary>
-	/// Applies a force to this character along the forward direction according to input scaled by DashForce.
-	/// <summary>
+	/** Applies a force to this character along the forward direction according to input scaled by DashForce. */
 	void Dash(const FInputActionValue& Value);
-	
-	/// <summary>
-	/// Plays all accessory sound, visual, etc. effects associated with this character's dash movement via a
-	/// Blueprint event.
-	/// <summary>
+
+	/**
+	 * Plays all accessory sound, visual, etc. effects associated with this character's dash movement via a Blueprint
+	 * event.
+	 */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player Dash")
 		void PlayDashEffects();
 
-	/// <summary>
-	/// Invoked on every update to the DashTimeline. Applies the dash movement velocity to the character according to
-	/// the DashCurve.
-	/// <summary>
+	/**
+	 * Invoked on every update to the DashTimeline. Applies the dash movement velocity to the character according to
+	 * the DashCurve.
+	 */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player Dash")
 		void OnDashTimelineUpdate(const float Value);
 
 protected:
-	/// <summary>
-	/// The timeline to adjust this character's velocity and sync dash animation over a duration of time.
-	/// <summary>
+	/** The timeline to adjust this character's velocity and sync dash animation over a duration of time. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Dash")
-		class UTimelineComponent* DashTimeline;
-	
-	/// <summary>
-	/// The float curve used to model this character's changing velocity over the DashTimeline duration of time.
-	/// <summary>
+		UTimelineComponent* DashTimeline;
+
+	/** The float curve used to model this character's changing velocity over the DashTimeline duration of time. */
 	UPROPERTY(EditAnywhere, Category = "Player Dash")
-		class UCurveFloat* DashCurve;
-	
-	/// <summary>
-	/// Adjusts this character's distance and speed attained within a single dash execution.
-	/// <summary>
+		UCurveFloat* DashCurve;
+
+	/** Adjusts this character's distance and speed attained within a single dash execution. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Dash")
 		float DashDistance;
 
 private:
 	bool CanDash;
-	
-	/// <summary>
-	/// Handles when the DashTimeline is completed. Toggles the CanDash flag to re-enable the dash ability.
-	/// <summary>
+
+	/** Handles when the DashTimeline is completed. Toggles the CanDash flag to re-enable the dash ability. */
 	UFUNCTION()
 		void OnDashTimelineComplete();
 
@@ -129,52 +114,36 @@ private:
 #pragma region Taunt
 
 public:
-	/// <summary>
-	/// If a taunt is not already in progress, begins a new taunt.
-	/// <summary>
+	/** If a taunt is not already in progress, begins a new taunt. */
 	void Taunt(const FInputActionValue& Value);
 
-	/// <summary>
-	/// Cancels the taunt currently being executed.
-	/// <summary>
+	/** Cancels the taunt currently being executed. */
 	void CancelTaunt(const FInputActionValue& Value);
 
-	/// <summary>
-	/// Plays all accessory sound, visual, etc. effects associated with this character's taunts via a Blueprint event.
-	/// <summary>
+	/** Plays all accessory sound, visual, etc. effects associated with this character's taunts via a Blueprint event. */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player Taunt")
 		void PlayTauntEffects();
 
-	/// <summary>
-	/// Quits all accessory sound, visual, etc. effects associated with the current taunt via a Blueprint event.
-	/// <summary>
+	/** Quits all accessory sound, visual, etc. effects associated with the current taunt via a Blueprint event. */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player Taunt")
 		void CancelTauntEffects();
 
 protected:
-	/// <summary>
-	/// Corresponds to the taunt types available to the player, used to trigger various SFX and timelines.
-	/// <summary>
+	/** Corresponds to the taunt types available to the player, used to trigger various SFX and timelines. */
 	UPROPERTY(BlueprintReadOnly, Category = "Player Taunt")
 		TEnumAsByte<ETauntType> TauntType;
 
-	/// <summary>
-	/// Adjusts this character's distance and speed attained within a single dash execution.
-	/// <summary>
+	/** Adjusts this character's distance and speed attained within a single dash execution. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Taunt")
 		TArray<float> TauntExecutionCooldown;
 
 private:
 	bool IsTaunting, CanTaunt;
 
-	/// <summary>
-	/// Refers to the current timer associated with the taunt execution chain.
-	/// <summary>
+	/** Refers to the current timer associated with the taunt execution chain. */
 	FTimerHandle TauntTimeHandler;
 
-	/// <summary>
-	/// Handles when the taunt execution timer is completed. Toggles the CanTaunt flag to re-enable the taunt ability.
-	/// <summary>
+	/** Handles when the taunt execution timer is completed. Toggles the CanTaunt flag to re-enable the taunt ability. */
 	void OnTauntComplete();
 
 #pragma endregion
