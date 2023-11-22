@@ -3,6 +3,8 @@
 #include "CPP_Player.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+#include "Kismet/KismetSystemLibrary.h"
+
 #pragma region UE Methods
 
 // Sets default values
