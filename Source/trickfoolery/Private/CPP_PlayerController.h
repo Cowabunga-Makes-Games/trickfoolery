@@ -47,16 +47,6 @@ private:
 
 	/** Delegate this dash movement logic to the possessed Pawn class. */
 	void Dash(const FInputActionValue& Value);
-	
-	/// <summary>
-	/// Delegate this taunt logic to the possessed Pawn class.
-	/// <summary>
-	void Taunt(const FInputActionValue& Value);
-
-	/// <summary>
-	/// Delegate this cancel taunt logic to the possessed Pawn class.
-	/// <summary>
-	void CancelTaunt(const FInputActionValue& Value);
 
 	/** Delegate this taunt logic to the possessed Pawn class. */
 	void Taunt(const FInputActionValue& Value);

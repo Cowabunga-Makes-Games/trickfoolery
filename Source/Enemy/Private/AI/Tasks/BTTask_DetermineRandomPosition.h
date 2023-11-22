@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "NavigationSystem.h"
-#include "CPP_EnemyAIController.h"
+#include "AI/CPP_EnemyAIController.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BTTask_DetermineRandomPosition.generated.h"

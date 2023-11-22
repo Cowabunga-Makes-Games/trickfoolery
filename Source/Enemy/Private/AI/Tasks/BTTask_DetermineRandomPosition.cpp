@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "BTTask_DetermineRandomPosition.h"
 
 UBTTask_DetermineRandomPosition::UBTTask_DetermineRandomPosition(FObjectInitializer const& ObjectInitializer) {
