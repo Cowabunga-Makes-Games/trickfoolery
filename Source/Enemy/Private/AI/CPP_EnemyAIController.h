@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "CPP_Enemy.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "CPP_EnemyAIController.generated.h"
 
 //*******************************************************************************************
@@ -22,4 +23,18 @@ public:
 
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
+
+private:
+	class UAISenseConfig_Sight* SightConfig;
+	class UAISenseConfig_Hearing* HearingConfig;
+	class UAISenseConfig_Damage* DamageConfig;
+	
+	FAISenseID SightID;
+	FAISenseID HearingID;
+	FAISenseID DamageID;
+
+	void SetupPerceptionSystem();
+
+	UFUNCTION()
+		void OnSenseUpdated(AActor* Actor, FAIStimulus Stimulus); 
 };

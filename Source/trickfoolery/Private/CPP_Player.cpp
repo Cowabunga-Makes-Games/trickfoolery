@@ -1,9 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CPP_Player.h"
-#include "Kismet/KismetSystemLibrary.h"
 
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Hearing.h"
+#include "Perception/AISense_Sight.h"
 
 #pragma region UE Methods
 
@@ -15,6 +18,8 @@ ACPP_Player::ACPP_Player() {
 	CanDash = true;
 	CanTaunt = true;
 	DashTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimelineComponent"));
+
+	SetupStimulusSource();
 }
 
 // Called when the game starts or when spawned
@@ -57,6 +62,18 @@ void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 #pragma endregion
 
+#pragma region AI Perception System
+
+void ACPP_Player::SetupStimulusSource() {
+	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source"));
+	
+	StimulusSource->RegisterForSense(TSubclassOf<UAISense_Sight>());
+	StimulusSource->RegisterForSense(TSubclassOf<UAISense_Hearing>());
+	StimulusSource->RegisterWithPerceptionSystem();
+}
+
+#pragma endregion
+
 #pragma region Input
 
 #pragma region Movement
@@ -64,26 +81,29 @@ void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 void ACPP_Player::Move(const FInputActionValue& Value) {
 	if (!CanDash || IsTaunting || Controller == nullptr) return;
 	
-	const FVector2D InputVector = Value.Get<FVector2D>();
+	const FVector2D VInput = Value.Get<FVector2D>();
+	if (VInput.IsZero()) return;
+	
 	const FRotator ControlRotation(0, Controller->GetControlRotation().Yaw, 0);
+	const float deltaSeconds = GetWorld()->GetDeltaSeconds();
 
 	// Forward/Backward direction
-	if (InputVector.Y != 0.f) {
+	if (VInput.Y != 0.f) {
 		// Get forward vector
 		const FVector Direction = ControlRotation.RotateVector(FVector::ForwardVector);
 		
-		AddMovementInput(Direction, InputVector.Y * MovementSpeed);
+		AddMovementInput(Direction * deltaSeconds, VInput.Y * MovementSpeed);
 	}
 
 	// Right/Left direction
-	if (InputVector.X != 0.f) {
+	if (VInput.X != 0.f) {
 		// Get right vector
 		const FVector Direction = ControlRotation.RotateVector(FVector::RightVector);
 		
-		AddMovementInput(Direction, InputVector.X * MovementSpeed);
+		AddMovementInput(Direction * deltaSeconds, VInput.X * MovementSpeed);
 	}
 	
-	PlayMovementEffects();
+	PlayMovementEffects(VInput);
 }
 
 #pragma endregion
