@@ -70,7 +70,7 @@ public:
 	 * Plays all accessory sound, visual, etc. effects associated with this character movement via a Blueprint event.
 	 */
 	UFUNCTION(BlueprintImplementableEvent, Category = "Player Movement")
-		void PlayMovementEffects();
+		void PlayMovementEffects(FVector2D VInput);
 
 protected:
 	/** The speed multiplier for the movement in the level. */
