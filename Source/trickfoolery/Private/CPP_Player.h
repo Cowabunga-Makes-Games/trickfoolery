@@ -48,6 +48,16 @@ protected:
 
 #pragma endregion
 
+#pragma region AI Perception System
+	
+private:
+	UPROPERTY()
+		class UAIPerceptionStimuliSourceComponent* StimulusSource;
+	
+	void SetupStimulusSource();
+	
+#pragma endregion
+
 #pragma region Input
 
 #pragma region Movement
