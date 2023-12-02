@@ -2,8 +2,9 @@
 
 #include "CPP_Player.h"
 #include "Kismet/KismetSystemLibrary.h"
-
-#include "Kismet/KismetSystemLibrary.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Hearing.h"
+#include "Perception/AISense_Sight.h"
 
 #pragma region UE Methods
 
@@ -15,6 +16,8 @@ ACPP_Player::ACPP_Player() {
 	CanDash = true;
 	CanTaunt = true;
 	DashTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimelineComponent"));
+
+	SetupStimulusSource();
 }
 
 // Called when the game starts or when spawned
@@ -53,6 +56,18 @@ void ACPP_Player::Tick(float DeltaTime) {
 // Called to bind functionality to input
 void ACPP_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+#pragma endregion
+
+#pragma region AI Perception System
+
+void ACPP_Player::SetupStimulusSource() {
+	StimulusSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("Stimulus Source"));
+	
+	StimulusSource->RegisterForSense(TSubclassOf<UAISense_Sight>());
+	StimulusSource->RegisterForSense(TSubclassOf<UAISense_Hearing>());
+	StimulusSource->RegisterWithPerceptionSystem();
 }
 
 #pragma endregion
