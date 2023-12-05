@@ -42,16 +42,16 @@ protected:
 		UCPP_InputConfigData* InputActions;
 
 private:
-	/** Delegate this movement logic to the possessed Pawn class. */
+	/** Delegate the execution of movement logic to the possessed Pawn class. */
 	void Move(const FInputActionValue& Value);
 
-	/** Delegate this dash movement logic to the possessed Pawn class. */
+	/** Delegate the execution of dash movement logic to the possessed Pawn class. */
 	void Dash(const FInputActionValue& Value);
 
-	/** Delegate this taunt logic to the possessed Pawn class. */
+	/** Delegate the execution of taunt logic to the possessed Pawn class. */
 	void Taunt(const FInputActionValue& Value);
 
-	/** Delegate this cancel taunt logic to the possessed Pawn class. */
+	/** Delegate the execution of cancel taunt logic to the possessed Pawn class. */
 	void CancelTaunt(const FInputActionValue& Value);
 
 #pragma endregion 
