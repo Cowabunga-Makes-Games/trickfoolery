@@ -6,6 +6,10 @@
 #include "GameFramework/Character.h"
 #include "Components/TimelineComponent.h"
 #include "CPP_InputConfigData.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Hearing.h"
+#include "Perception/AISense_Sight.h"
 #include "CPP_Player.generated.h"
 
 UENUM(BlueprintType)
@@ -51,9 +55,11 @@ protected:
 #pragma region AI Perception System
 	
 private:
+	/** Used to communicate feedback to the enemy AI perception system to operate proper sense stimulus detection. */
 	UPROPERTY()
 		class UAIPerceptionStimuliSourceComponent* StimulusSource;
-	
+
+	/** Registers this actor as a stimulus source for the enemy AI perception sight and hearing senses. */
 	void SetupStimulusSource();
 	
 #pragma endregion
@@ -113,7 +119,7 @@ protected:
 		float DashDistance;
 
 private:
-	bool CanDash;
+	bool bCanDash;
 
 	/** Handles when the DashTimeline is completed. Toggles the CanDash flag to re-enable the dash ability. */
 	UFUNCTION()
@@ -148,7 +154,7 @@ protected:
 		TArray<float> TauntExecutionCooldown;
 
 private:
-	bool IsTaunting, CanTaunt;
+	bool bIsTaunting, bCanTaunt;
 
 	/** Refers to the current timer associated with the taunt execution chain. */
 	FTimerHandle TauntTimeHandler;

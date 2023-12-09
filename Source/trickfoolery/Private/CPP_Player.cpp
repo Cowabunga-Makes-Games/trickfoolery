@@ -2,12 +2,6 @@
 
 #include "CPP_Player.h"
 
-#include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "Perception/AIPerceptionStimuliSourceComponent.h"
-#include "Perception/AISense_Hearing.h"
-#include "Perception/AISense_Sight.h"
-
 #pragma region UE Methods
 
 // Sets default values
@@ -15,8 +9,8 @@ ACPP_Player::ACPP_Player() {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	CanDash = true;
-	CanTaunt = true;
+	bCanDash = true;
+	bCanTaunt = true;
 	DashTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("TimelineComponent"));
 
 	SetupStimulusSource();
@@ -28,16 +22,16 @@ void ACPP_Player::BeginPlay() {
 	
 	if (DashCurve) {
 		// Delegate, contains the signature of the function to execute on every DashTimeline update
-		FOnTimelineFloat TimelineUpdateCallback;
-		FOnTimelineEventStatic TimelineFinishedCallback;
+		FOnTimelineFloat timelineUpdateCallback;
+		FOnTimelineEventStatic timelineFinishedCallback;
 
-		TimelineUpdateCallback.BindUFunction(this, FName{ TEXT("OnDashTimelineUpdate") });
-		TimelineFinishedCallback.BindUFunction(this, FName{ TEXT("OnDashTimelineComplete") });
+		timelineUpdateCallback.BindUFunction(this, FName{ TEXT("OnDashTimelineUpdate") });
+		timelineFinishedCallback.BindUFunction(this, FName{ TEXT("OnDashTimelineComplete") });
 
 		// Set up loop status and the function that will fire when the timeline ticks
 		DashTimeline->SetTimelineLength(0.8f);
-		DashTimeline->AddInterpFloat(DashCurve, TimelineUpdateCallback);
-		DashTimeline->SetTimelineFinishedFunc(TimelineFinishedCallback);
+		DashTimeline->AddInterpFloat(DashCurve, timelineUpdateCallback);
+		DashTimeline->SetTimelineFinishedFunc(timelineFinishedCallback);
 		DashTimeline->SetLooping(false);
 
 		return;
@@ -79,31 +73,31 @@ void ACPP_Player::SetupStimulusSource() {
 #pragma region Movement
 
 void ACPP_Player::Move(const FInputActionValue& Value) {
-	if (!CanDash || IsTaunting || Controller == nullptr) return;
+	if (!bCanDash || bIsTaunting || Controller == nullptr) return;
 	
-	const FVector2D VInput = Value.Get<FVector2D>();
-	if (VInput.IsZero()) return;
+	const FVector2D vInput = Value.Get<FVector2D>();
+	if (vInput.IsZero()) return;
 	
-	const FRotator ControlRotation(0, Controller->GetControlRotation().Yaw, 0);
+	const FRotator controlRotation(0, Controller->GetControlRotation().Yaw, 0);
 	const float deltaSeconds = GetWorld()->GetDeltaSeconds();
 
 	// Forward/Backward direction
-	if (VInput.Y != 0.f) {
+	if (vInput.Y != 0.f) {
 		// Get forward vector
-		const FVector Direction = ControlRotation.RotateVector(FVector::ForwardVector);
+		const FVector direction = controlRotation.RotateVector(FVector::ForwardVector);
 		
-		AddMovementInput(Direction * deltaSeconds, VInput.Y * MovementSpeed);
+		AddMovementInput(direction * deltaSeconds, vInput.Y * MovementSpeed);
 	}
 
 	// Right/Left direction
-	if (VInput.X != 0.f) {
+	if (vInput.X != 0.f) {
 		// Get right vector
-		const FVector Direction = ControlRotation.RotateVector(FVector::RightVector);
+		const FVector direction = controlRotation.RotateVector(FVector::RightVector);
 		
-		AddMovementInput(Direction * deltaSeconds, VInput.X * MovementSpeed);
+		AddMovementInput(direction * deltaSeconds, vInput.X * MovementSpeed);
 	}
 	
-	PlayMovementEffects(VInput);
+	PlayMovementEffects(vInput);
 }
 
 #pragma endregion
@@ -111,23 +105,23 @@ void ACPP_Player::Move(const FInputActionValue& Value) {
 #pragma region Dash
 
 void ACPP_Player::Dash(const FInputActionValue& Value) {
-	if (!CanDash || Controller == nullptr) return;
+	if (!bCanDash || Controller == nullptr) return;
 
 	DashTimeline->PlayFromStart();
 	
 	// Cancel the current taunt action
-	if (IsTaunting) {
+	if (bIsTaunting) {
 		CancelTaunt(0);
 	}
 	
 	PlayDashEffects();
 	
-	CanDash = false;
+	bCanDash = false;
 }
 
 void ACPP_Player::OnDashTimelineComplete() {
-	CanDash = true;
-	CanTaunt = true;
+	bCanDash = true;
+	bCanTaunt = true;
 }
 
 #pragma endregion 
@@ -135,7 +129,7 @@ void ACPP_Player::OnDashTimelineComplete() {
 #pragma region Taunt
 
 void ACPP_Player::Taunt(const FInputActionValue& Value) {
-	if (!CanTaunt) return;
+	if (!bCanTaunt) return;
 
 	// Select a random taunt type
 	TauntType = static_cast<ETauntType>(FMath::RandRange(0, TauntCount - 1));
@@ -161,13 +155,13 @@ void ACPP_Player::Taunt(const FInputActionValue& Value) {
 	}
 	
 	PlayTauntEffects();
-	IsTaunting = true;
-	CanTaunt = false;
+	bIsTaunting = true;
+	bCanTaunt = false;
 }
 
 // Can be used to increment some taunt combo to add hype or angy multipliers
 void ACPP_Player::OnTauntComplete() {
-	CanTaunt = true;
+	bCanTaunt = true;
 
 	UKismetSystemLibrary::PrintString(this, "Taunt complete!");
 }
@@ -177,8 +171,8 @@ void ACPP_Player::CancelTaunt(const FInputActionValue& Value) {
 
 	GetWorldTimerManager().ClearTimer(TauntTimeHandler);
 	CancelTauntEffects();
-	IsTaunting = false;
-	CanTaunt = true;
+	bIsTaunting = false;
+	bCanTaunt = true;
 }
 
 #pragma endregion 

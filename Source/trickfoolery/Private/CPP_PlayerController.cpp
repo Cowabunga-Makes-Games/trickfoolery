@@ -35,26 +35,26 @@ void ACPP_PlayerController::SetupInputComponent() {
 #pragma region Input
 
 void ACPP_PlayerController::Move(const FInputActionValue& Value) {
-	if (auto PossessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
-		PossessedPawn->Move(Value);
+	if (auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+		possessedPawn->Move(Value);
 	}
 }
 
 void ACPP_PlayerController::Dash(const FInputActionValue& Value) {
-	if (auto PossessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
-		PossessedPawn->Dash(Value);
+	if (auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+		possessedPawn->Dash(Value);
 	}
 }
 
 void ACPP_PlayerController::Taunt(const FInputActionValue& Value) {
-	if (auto PossessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
-		PossessedPawn->Taunt(Value);
+	if (auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+		possessedPawn->Taunt(Value);
 	}
 }
 
 void ACPP_PlayerController::CancelTaunt(const FInputActionValue& Value) {
-	if (auto PossessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
-		PossessedPawn->CancelTaunt(Value);
+	if (auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+		possessedPawn->CancelTaunt(Value);
 	}
 }
 

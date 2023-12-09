@@ -39,9 +39,11 @@ protected:
 #pragma region AI
 
 public:
+	/** Retrieves the behaviour tree associated with this Character. */
 	UBehaviorTree* GetBehaviourTree() const;
 
 protected:
+	/** Operates the enemy behaviour logic. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AI")
 		UBehaviorTree* AIBrain;
 

@@ -19,15 +19,19 @@ class UCPP_InputConfigData : public UDataAsset {
 	GENERATED_BODY()
 
 public:
+	/** Governs the player character movement input. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		UInputAction* MovementInput;
 
+	/** Governs the player character dash input. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		UInputAction* DashInput;
 
+	/** Governs when the player character receives input to taunt. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		UInputAction* TauntInput;
 
+	/** Governs when the player character stops receiving input to taunt, cancelling the taunt. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		UInputAction* CancelTauntInput;
 };
