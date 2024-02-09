@@ -12,8 +12,8 @@ void ACPP_PlayerController::BeginPlay() {
 	// Add Input Mapping Context
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
 		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer())) {
-		Subsystem->ClearAllMappings();
-		Subsystem->AddMappingContext(InputMappingContext, 0);
+			Subsystem->ClearAllMappings();
+			Subsystem->AddMappingContext(InputMappingContext, 0);
 		}
 }
 
@@ -27,6 +27,7 @@ void ACPP_PlayerController::SetupInputComponent() {
 		EnhancedInputComponent->BindAction(InputActions->DashInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::Dash);
 		EnhancedInputComponent->BindAction(InputActions->TauntInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::Taunt);
 		EnhancedInputComponent->BindAction(InputActions->CancelTauntInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::CancelTaunt);
+		EnhancedInputComponent->BindAction(InputActions->DepleteHealthInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::DepleteHealth);
 	}
 }
 
@@ -55,6 +56,12 @@ void ACPP_PlayerController::Taunt(const FInputActionValue& Value) {
 void ACPP_PlayerController::CancelTaunt(const FInputActionValue& Value) {
 	if (auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
 		possessedPawn->CancelTaunt(Value);
+	}
+}
+
+void ACPP_PlayerController::DepleteHealth(const FInputActionValue& Value) {
+	if (auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+		possessedPawn->DepleteHealth(Value);
 	}
 }
 

@@ -6,10 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Components/TimelineComponent.h"
 #include "CPP_InputConfigData.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
-#include "Perception/AISense_Hearing.h"
-#include "Perception/AISense_Sight.h"
 #include "CPP_Player.generated.h"
 
 UENUM(BlueprintType)
@@ -62,6 +59,15 @@ private:
 	/** Registers this actor as a stimulus source for the enemy AI perception sight and hearing senses. */
 	void SetupStimulusSource();
 	
+#pragma endregion
+
+#pragma region Status
+
+protected:
+	/** The player's health. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Status")
+		float Health = 3.0f;
+
 #pragma endregion
 
 #pragma region Input
@@ -163,6 +169,10 @@ private:
 	void OnTauntComplete();
 
 #pragma endregion
+
+public:
+	/** TODO: Remove this when linking the health UI to the enemy-to-player damage response if not needed. */
+	void DepleteHealth(const FInputActionValue& Value);
 
 #pragma endregion 
 

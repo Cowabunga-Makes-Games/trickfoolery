@@ -34,4 +34,8 @@ public:
 	/** Governs when the player character stops receiving input to taunt, cancelling the taunt. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		UInputAction* CancelTauntInput;
+		
+    /** TODO: Remove this when linking the health UI to the enemy-to-player damage response. */
+        UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+            UInputAction* DepleteHealthInput;
 };

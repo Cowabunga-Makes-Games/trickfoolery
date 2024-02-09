@@ -53,6 +53,9 @@ private:
 
 	/** Delegate the execution of cancel taunt logic to the possessed Pawn class. */
 	void CancelTaunt(const FInputActionValue& Value);
+	
+	/** TODO: Remove this when linking the health UI to the enemy-to-player damage response. */
+	void DepleteHealth(const FInputActionValue& Value);
 
 #pragma endregion 
 	
