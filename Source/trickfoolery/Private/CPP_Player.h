@@ -64,7 +64,7 @@ private:
 #pragma region Status
 
 protected:
-	/** The player's health. */
+	/** Records the health of the player to be updated upon interaction with damaging and healing actors. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Status")
 		float Health = 3.0f;
 
@@ -171,7 +171,10 @@ private:
 #pragma endregion
 
 public:
-	/** TODO: Remove this when linking the health UI to the enemy-to-player damage response if not needed. */
+	/** Updates the player's health stat and the associated HUD to visually reflect the changes.
+	 * TODO: Adjust this when linking the health UI to the enemy-to-player damage response to determine reflect
+	 * damage calculation.
+	 */
 	void DepleteHealth(const FInputActionValue& Value);
 
 #pragma endregion 

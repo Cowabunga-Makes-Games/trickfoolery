@@ -4,7 +4,9 @@
 
 #pragma region UE Methods
 
-ACPP_PlayerController::ACPP_PlayerController() {}
+ACPP_PlayerController::ACPP_PlayerController() {
+	// InputMappingContext and InputActions to be initialized and set in the Blueprint of the same name
+}
 
 void ACPP_PlayerController::BeginPlay() {
 	Super::BeginPlay();
