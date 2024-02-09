@@ -2,6 +2,12 @@
 
 #include "CPP_Player.h"
 
+#include "CPP_LevelHUD.h"
+#include "CPP_PlayerController.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Perception/AISense_Hearing.h"
+#include "Perception/AISense_Sight.h"
+
 #pragma region UE Methods
 
 // Sets default values
@@ -175,6 +181,24 @@ void ACPP_Player::CancelTaunt(const FInputActionValue& Value) {
 	bCanTaunt = true;
 }
 
-#pragma endregion 
+#pragma endregion
+
+void ACPP_Player::UpdateHealth(const FInputActionValue& Value, float Amount) {
+	if (Controller == nullptr) return;
+
+	Health = FMath::Clamp(Health + Amount, MinHealth, MaxHealth);
+	
+	const auto controller = Cast<ACPP_PlayerController>(Controller);
+	if (!controller) {
+		return;
+	}
+
+	const auto HUD = Cast<ACPP_LevelHUD>(controller->GetHUD());
+	if (!HUD) {
+		return;
+	}
+
+	HUD->PlayerHealthWidget->UpdateHealth(Health);
+}
 
 #pragma endregion

@@ -26,7 +26,7 @@ protected:
 	virtual void SetupInputComponent() override;
 	
 	// To add mapping context
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
 
 #pragma endregion
 
@@ -53,6 +53,12 @@ private:
 
 	/** Delegate the execution of cancel taunt logic to the possessed Pawn class. */
 	void CancelTaunt(const FInputActionValue& Value);
+	
+	/** TODO: Remove this when linking the health UI to the enemy-to-player damage response. */
+	void DepleteHealth(const FInputActionValue& Value);
+
+	/** TODO: Remove this when linking the health UI to the enemy-to-player damage response. */
+	void AddHealth(const FInputActionValue& Value);
 
 #pragma endregion 
 	

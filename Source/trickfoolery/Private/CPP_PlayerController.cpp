@@ -4,7 +4,9 @@
 
 #pragma region UE Methods
 
-ACPP_PlayerController::ACPP_PlayerController() {}
+ACPP_PlayerController::ACPP_PlayerController() {
+	// InputMappingContext and InputActions to be initialized and set in the Blueprint of the same name
+}
 
 void ACPP_PlayerController::BeginPlay() {
 	Super::BeginPlay();
@@ -12,8 +14,8 @@ void ACPP_PlayerController::BeginPlay() {
 	// Add Input Mapping Context
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
 		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer())) {
-		Subsystem->ClearAllMappings();
-		Subsystem->AddMappingContext(InputMappingContext, 0);
+			Subsystem->ClearAllMappings();
+			Subsystem->AddMappingContext(InputMappingContext, 0);
 		}
 }
 
@@ -27,6 +29,8 @@ void ACPP_PlayerController::SetupInputComponent() {
 		EnhancedInputComponent->BindAction(InputActions->DashInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::Dash);
 		EnhancedInputComponent->BindAction(InputActions->TauntInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::Taunt);
 		EnhancedInputComponent->BindAction(InputActions->CancelTauntInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::CancelTaunt);
+		EnhancedInputComponent->BindAction(InputActions->DepleteHealthInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::DepleteHealth);
+		EnhancedInputComponent->BindAction(InputActions->AddHealthInput, ETriggerEvent::Triggered, this, &ACPP_PlayerController::AddHealth);
 	}
 }
 
@@ -47,14 +51,26 @@ void ACPP_PlayerController::Dash(const FInputActionValue& Value) {
 }
 
 void ACPP_PlayerController::Taunt(const FInputActionValue& Value) {
-	if (auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+	if (const auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
 		possessedPawn->Taunt(Value);
 	}
 }
 
 void ACPP_PlayerController::CancelTaunt(const FInputActionValue& Value) {
-	if (auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+	if (const auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
 		possessedPawn->CancelTaunt(Value);
+	}
+}
+
+void ACPP_PlayerController::DepleteHealth(const FInputActionValue& Value) {
+	if (const auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+		possessedPawn->UpdateHealth(Value, -1.0f);
+	}
+}
+
+void ACPP_PlayerController::AddHealth(const FInputActionValue& Value) {
+	if (const auto possessedPawn = Cast<ACPP_Player>(this->GetPawn())) {
+		possessedPawn->UpdateHealth(Value, 0.5f);
 	}
 }
 
