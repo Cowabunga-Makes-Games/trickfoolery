@@ -183,18 +183,18 @@ void ACPP_Player::CancelTaunt(const FInputActionValue& Value) {
 
 #pragma endregion
 
-void ACPP_Player::DepleteHealth(const FInputActionValue& Value) {
-	if (Controller == nullptr || FMath::IsNearlyEqual(Health, 0.0f)) return;
+void ACPP_Player::UpdateHealth(const FInputActionValue& Value, float Amount) {
+	if (Controller == nullptr) return;
 
-	Health -= 1.0f;
-
-	const ACPP_PlayerController* controller = Cast<ACPP_PlayerController>(Controller);
-	if (controller == nullptr) {
+	Health = FMath::Clamp(Health + Amount, MinHealth, MaxHealth);
+	
+	const auto controller = Cast<ACPP_PlayerController>(Controller);
+	if (!controller) {
 		return;
 	}
 
-	const ACPP_LevelHUD* HUD = Cast<ACPP_LevelHUD>(controller->GetHUD());
-	if (HUD == nullptr) {
+	const auto HUD = Cast<ACPP_LevelHUD>(controller->GetHUD());
+	if (!HUD) {
 		return;
 	}
 

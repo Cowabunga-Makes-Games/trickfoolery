@@ -36,6 +36,10 @@ public:
 		UInputAction* CancelTauntInput;
 		
     /** TODO: Remove this when linking the health UI to the enemy-to-player damage response. */
-        UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-            UInputAction* DepleteHealthInput;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+        UInputAction* DepleteHealthInput;
+
+	/** TODO: Remove this when linking the health UI to the enemy-to-player damage response. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+		UInputAction* AddHealthInput;
 };

@@ -57,6 +57,9 @@ private:
 	/** TODO: Remove this when linking the health UI to the enemy-to-player damage response. */
 	void DepleteHealth(const FInputActionValue& Value);
 
+	/** TODO: Remove this when linking the health UI to the enemy-to-player damage response. */
+	void AddHealth(const FInputActionValue& Value);
+
 #pragma endregion 
 	
 };
